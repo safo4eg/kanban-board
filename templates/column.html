@@ -1,0 +1,12 @@
+<div class="column">
+    <div class="header">
+        <div class="title">{{title}}</div>
+        <span class="add" v-show="unique === 1" @click="$emit('add-card', unique)"></span>
+    </div>
+
+    <div class="card-wrapper">
+        <card
+                v-for="card in cards" :key="card.unique"
+        >{{card.unique}}</card>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="board">
+    <column
+            v-for="column in columns" :key="column.unique"
+            :unique="column.unique"
+            :status="column.status"
+            :title="column.title"
+            :cards="column.cards"
+
+            @add-card="addCard"
+    ></column>
+</div>

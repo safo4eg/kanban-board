@@ -18,7 +18,7 @@ main .title {
     text-align: center;
 }
 
-.boards-wrapper {
+.board {
     max-width: 1400px;
     width: 100%;
     margin: 40px auto 0 auto;
@@ -26,9 +26,9 @@ main .title {
     display: flex;
 }
 
-/* BOARD */
+/* COLUMN */
 
-.board {
+.column {
     flex-basis: 325px;
 
     background-color: #262626;
@@ -36,11 +36,11 @@ main .title {
     padding: 20px;
 }
 
-.board:nth-child(n + 2) {
+.column:nth-child(n + 2) {
     margin-left: 25px;
 }
 
-.board .header {
+.column .header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
@@ -48,11 +48,11 @@ main .title {
     padding-bottom: 40px;
 }
 
-.board .header .title {
+.column .header .title {
     font-size: 22px;
 }
 
-.board .header span.add::before {
+.column .header span.add::before {
     content: "\271A";
     color: white;
     border: 2px solid white;
@@ -62,7 +62,7 @@ main .title {
     transition-duration: 0.2s;
 }
 
-.board .header span.add:hover::before {
+.column .header span.add:hover::before {
     cursor: pointer;
     color: gray;
     border-color: gray;
