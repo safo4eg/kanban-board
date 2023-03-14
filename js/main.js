@@ -1,13 +1,16 @@
 let boardTemplate = 'templates/board.html';
 let columnTemplate = 'templates/column.html';
 let cardTemplate = 'templates/card.html';
+let cardEditTemplate = 'templates/card-edit.html';
 
 
-let templates = getTemplates(columnTemplate, boardTemplate, cardTemplate);
+let templates = getTemplates(columnTemplate, boardTemplate, cardTemplate, cardEditTemplate);
 templates.then(array => {
     columnTemplate = array[0];
     boardTemplate = array[1];
     cardTemplate = array[2];
+    cardEditTemplate = array[3];
+
 
     let boardBody = {
         template: boardTemplate,
@@ -56,7 +59,6 @@ templates.then(array => {
                    unique: Date.now(),
                    title: 'Новая задача',
                    desc: 'Описание задачи',
-                   isEdit: false,
 
                    dates: {
                        creation: Date.now(),
@@ -69,8 +71,6 @@ templates.then(array => {
                this.columns.forEach(column => {
                    if(column.unique === unique) column.cards.push(card);
                });
-
-               console.log(this.columns);
             },
         }
 
@@ -111,10 +111,37 @@ templates.then(array => {
     let cardBody = {
         template: cardTemplate,
         props: {
-          className: {
-              type: String,
-              required: false
-          }
+            inputInfo: {
+                type: Object,
+                required: true
+            },
+
+            className: {
+                type: String,
+                required: false
+            },
+        },
+
+        data() {
+            return {
+                isEdit: false,
+            }
+        },
+
+        methods: {
+            changeEditStatus() {
+                this.isEdit = !this.isEdit;
+            }
+        }
+    };
+
+    let cardEditBody = {
+        template: cardEditTemplate,
+        props: {
+            initialValues: {
+                type: Object,
+                required: true
+            }
         },
 
         data() {
@@ -122,11 +149,12 @@ templates.then(array => {
 
             }
         }
-    };
+    }
 
     Vue.component('board', boardBody);
     Vue.component('column', columnBody);
     Vue.component('card', cardBody);
+    Vue.component('card-edit', cardEditBody);
     let app = new Vue({el: '#app'});
 });
 

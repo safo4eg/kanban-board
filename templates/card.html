@@ -1,19 +1,26 @@
-<div class="card" :class="className">
-    <div class="header">
-        <h2 class="title">Demo task</h2>
-        <div class="actions">
-            <span class="delete"></span>
-            <span class="edit"></span>
+<div class="card" :class="className" :class="{">
+    <template v-if="isEdit === false">
+        <div class="header">
+            <h2 class="title">{{inputInfo.title}}</h2>
+            <div class="actions">
+                <span class="delete"></span>
+                <span @click="changeEditStatus" class="edit"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="desc">
-        Здесь будет описание задачи (краткое)
-    </div>
+        <div class="desc">
+            {{inputInfo.desc}}
+        </div>
 
-    <div class="time">
-        <span class="from">12.03.2023</span>
-        <span class="arrow"></span>
-        <span class="to">20.03.2023</span>
-    </div>
+        <div class="time">
+            <span class="from">{{inputInfo.dates.creation}}</span>
+            <span class="arrow"></span>
+            <span class="to">{{inputInfo.dates.deadline}}</span>
+        </div>
+    </template>
+
+    <card-edit
+            v-else-if="isEdit === true"
+            :initialValues="inputInfo"
+    ></card-edit>
 </div>

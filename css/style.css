@@ -127,6 +127,7 @@ main .title {
     color: white;
 
     margin-top: 10px;
+    display: flex;
 }
 
 .card .time span:nth-child(n + 2) {
@@ -183,7 +184,34 @@ main .title {
     background-color: #43b401;
 }
 
+/* CARD-EDIT */
 
+.card.edit .input {
+    border: none;
+    border-bottom: 1px solid black;
+    color: black;
+    background-color: #b4b401;
+}
+
+.card.edit .input:focus {
+    outline: none;
+}
+
+.card.edit .header .input.title {
+    font-size: 16px;
+}
+
+.card.edit .desc textarea {
+    max-width: 203px;
+    width: 100%;
+    resize: none;
+    font-size: 14px;
+}
+
+.card.edit .time .to .input {
+    max-width: 90px;
+    width: 100%;
+}
 
 
 

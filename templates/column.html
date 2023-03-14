@@ -7,6 +7,8 @@
     <div class="card-wrapper">
         <card
                 v-for="card in cards" :key="card.unique"
+                :class-name="status"
+                :input-info="card"
         >{{card.unique}}</card>
     </div>
 </div>
