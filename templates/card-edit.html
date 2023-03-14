@@ -12,10 +12,16 @@
     </div>
 
     <div class="time">
-        <span class="from">12.03.2023</span>
+        <span class="from">{{initialValues.dates.creation}}</span>
         <span class="arrow"></span>
         <span class="to">
-            <input class="input" :class="{error: errors.deadline !== undefined}" type="text" placeholder="YYYY.MM.DD" v-model="deadline">
+            <input
+                    class="input"
+                    :class="{error: errors.deadline !== undefined}"
+                    type="text" placeholder="DD.MM.YYYY"
+                    @keyup.enter="save"
+                    v-model="deadline"
+            >
             <div v-show="errors.deadline !== undefined" class="error">{{errors.deadline}}</div>
         </span>
     </div>

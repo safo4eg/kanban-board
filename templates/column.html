@@ -9,6 +9,7 @@
                 v-for="card in cards" :key="card.unique"
                 :class-name="status"
                 :input-info="card"
+                :column-unique="unique"
         >{{card.unique}}</card>
     </div>
 </div>

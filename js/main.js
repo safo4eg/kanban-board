@@ -11,12 +11,42 @@ templates.then(array => {
     cardTemplate = array[2];
     cardEditTemplate = array[3];
 
+    let eventBus = new Vue();
 
     let boardBody = {
         template: boardTemplate,
 
         beforeUpdate() {
             console.log('изменения')
+        },
+
+        mounted() {
+            eventBus.$on('card-edit', (columnUnique, cardUnique) => {
+                    this.columns.forEach(column => {
+                        if(column.unique === columnUnique) {
+                            column.cards.forEach(card => {
+                                if(card.unique === cardUnique) {
+                                    card.isEdit = true;
+                                }
+                            });
+                        }
+                    });
+            });
+
+            eventBus.$on('save-card', (columnUnique, cardUnique, title, desc, deadline) => {
+                this.columns.forEach(column => {
+                    if(column.unique === columnUnique) {
+                        column.cards.forEach(card => {
+                            if(card.unique === cardUnique) {
+                                card.title = title;
+                                card.desc = desc;
+                                card.dates.deadline = deadline;
+                                card.isEdit = false;
+                            }
+                        });
+                    }
+                });
+            });
         },
 
         data() {
@@ -59,7 +89,7 @@ templates.then(array => {
                    unique: Date.now(),
                    title: 'Новая задача',
                    desc: 'Описание задачи',
-
+                   isEdit: false,
                    dates: {
                        creation: Date.now(),
                        edit: null,
@@ -74,7 +104,7 @@ templates.then(array => {
             },
         }
 
-    }; // ..boardBody
+    };
 
     let columnBody = {
         template: columnTemplate,
@@ -116,6 +146,11 @@ templates.then(array => {
         },
 
         props: {
+            columnUnique: {
+                type: Number,
+                required: true
+            },
+
             inputInfo: {
                 type: Object,
                 required: true
@@ -129,13 +164,13 @@ templates.then(array => {
 
         data() {
             return {
-                isEdit: false,
+
             }
         },
 
         methods: {
             changeEditStatus() {
-                this.isEdit = !this.isEdit;
+                eventBus.$emit('card-edit', this.columnUnique, this.inputInfo.unique);
             }
         }
     };
@@ -153,6 +188,11 @@ templates.then(array => {
                 type: Object,
                 required: true
             },
+
+            columnUnique: {
+                type: Number,
+                required: true
+            }
         },
 
         data() {
@@ -174,10 +214,11 @@ templates.then(array => {
         methods: {
             save() {
                 let errors = {};
-
-                if(this.deadline.search(/^\d{4}-\d{2}-\d{2}$/) === -1) errors.deadline = 'Неверный формат';
+                if(this.deadline.search(/^\d{2}\.\d{2}\.\d{4}$/) === -1) errors.deadline = 'Неверный формат';
                 if(Object.keys(errors).length !== 0) this.errors = errors;
-                else {console.log('генерируем событие')};
+                else {
+                    eventBus.$emit('save-card', this.columnUnique, this.initialValues.unique, this.title, this.desc, this.deadline);
+                }
             }
         }
     }

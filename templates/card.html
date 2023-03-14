@@ -1,4 +1,4 @@
-    <div v-if="isEdit === false" class="card" :class="className">
+    <div v-if="inputInfo.isEdit === false" class="card" :class="className">
         <div class="header">
             <h2 class="title">{{inputInfo.title}}</h2>
             <div class="actions">
@@ -19,7 +19,8 @@
     </div>
 
     <card-edit
-            v-else-if="isEdit === true"
+            v-else-if="inputInfo.isEdit === true"
             :initial-values="inputInfo"
             :class-name="className"
+            :column-unique="columnUnique"
     ></card-edit>

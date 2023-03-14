@@ -194,7 +194,7 @@ main .title {
 }
 
 .card.edit .input.error {
-    color: red;
+    color: black;
     border-color: red;
 }
 
