@@ -199,6 +199,7 @@ main .title {
 
 .card.edit .header .input.title {
     font-size: 16px;
+    text-align: left;
 }
 
 .card.edit .desc textarea {
@@ -211,6 +212,32 @@ main .title {
 .card.edit .time .to .input {
     max-width: 90px;
     width: 100%;
+}
+
+.card.edit .actions .cancel::before {
+    content: "\2716";
+    color: white;
+    font-size: 16px;
+    transition-duration: 0.1s;
+}
+
+.card.edit .actions .cancel:hover::before {
+    cursor: pointer;
+    color: red;
+    border-color: gray;
+}
+
+.card.edit .actions .apply::before {
+    content: "\2714";
+    color: white;
+    font-size: 16px;
+    transition-duration: 0.1s;
+}
+
+.card.edit .actions .apply:hover::before {
+    cursor: pointer;
+    color: green;
+    border-color: gray;
 }
 
 

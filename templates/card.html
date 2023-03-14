@@ -1,5 +1,4 @@
-<div class="card" :class="className" :class="{">
-    <template v-if="isEdit === false">
+    <div v-if="isEdit === false" class="card" :class="className">
         <div class="header">
             <h2 class="title">{{inputInfo.title}}</h2>
             <div class="actions">
@@ -17,10 +16,10 @@
             <span class="arrow"></span>
             <span class="to">{{inputInfo.dates.deadline}}</span>
         </div>
-    </template>
+    </div>
 
     <card-edit
             v-else-if="isEdit === true"
-            :initialValues="inputInfo"
+            :initial-values="inputInfo"
+            :class-name="className"
     ></card-edit>
-</div>

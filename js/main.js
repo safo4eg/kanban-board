@@ -110,6 +110,11 @@ templates.then(array => {
 
     let cardBody = {
         template: cardTemplate,
+
+        beforeUpdate() {
+            console.log('change in card');
+        },
+
         props: {
             inputInfo: {
                 type: Object,
@@ -137,16 +142,30 @@ templates.then(array => {
 
     let cardEditBody = {
         template: cardEditTemplate,
+
         props: {
+            className: {
+                type: String,
+                required: true
+            },
+
             initialValues: {
                 type: Object,
                 required: true
-            }
+            },
         },
 
         data() {
             return {
+                title: this.initialValues.title,
+                desc: this.initialValues.desc,
+                deadline: ''
+            }
+        },
 
+        computed: {
+            rows() {
+                return Math.ceil(this.desc.length / 23);
             }
         }
     }

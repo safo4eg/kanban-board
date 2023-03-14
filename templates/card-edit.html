@@ -1,3 +1,21 @@
-<div>
-  <input type="text" :value="initialValues.title">
+<div class="card edit" :class="className">
+    <div class="header">
+      <input class="input title" type="text" v-model="title">
+      <div class="actions">
+        <span class="apply"></span>
+        <span class="cancel"></span>
+      </div>
+    </div>
+
+    <div class="desc">
+      <textarea class="input" :rows="rows" v-model="desc"></textarea>
+    </div>
+
+    <div class="time">
+        <span class="from">12.03.2023</span>
+        <span class="arrow"></span>
+        <span class="to">
+            <input class="input" type="text" placeholder="YYYY.MM.DD">
+        </span>
+    </div>
 </div>
