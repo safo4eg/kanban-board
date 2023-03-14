@@ -2,7 +2,7 @@
     <div class="header">
       <input class="input title" type="text" v-model="title">
       <div class="actions">
-        <span class="apply"></span>
+        <span class="apply" @click="save"></span>
         <span class="cancel"></span>
       </div>
     </div>
@@ -15,7 +15,8 @@
         <span class="from">12.03.2023</span>
         <span class="arrow"></span>
         <span class="to">
-            <input class="input" type="text" placeholder="YYYY.MM.DD">
+            <input class="input" :class="{error: errors.deadline !== undefined}" type="text" placeholder="YYYY.MM.DD" v-model="deadline">
+            <div v-show="errors.deadline !== undefined" class="error">{{errors.deadline}}</div>
         </span>
     </div>
 </div>

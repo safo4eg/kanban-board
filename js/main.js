@@ -159,13 +159,25 @@ templates.then(array => {
             return {
                 title: this.initialValues.title,
                 desc: this.initialValues.desc,
-                deadline: ''
+                deadline: '',
+                errors: {}
             }
         },
 
         computed: {
             rows() {
+                if(this.desc.length === 0) return 1;
                 return Math.ceil(this.desc.length / 23);
+            }
+        },
+
+        methods: {
+            save() {
+                let errors = {};
+
+                if(this.deadline.search(/^\d{4}-\d{2}-\d{2}$/) === -1) errors.deadline = 'Неверный формат';
+                if(Object.keys(errors).length !== 0) this.errors = errors;
+                else {console.log('генерируем событие')};
             }
         }
     }

@@ -193,6 +193,11 @@ main .title {
     background-color: #b4b401;
 }
 
+.card.edit .input.error {
+    color: red;
+    border-color: red;
+}
+
 .card.edit .input:focus {
     outline: none;
 }
@@ -238,6 +243,11 @@ main .title {
     cursor: pointer;
     color: green;
     border-color: gray;
+}
+
+.card.edit .error {
+    color: black;
+    margin-top: 3px;
 }
 
 
