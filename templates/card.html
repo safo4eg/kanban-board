@@ -20,18 +20,18 @@
         <div v-if="inputInfo.back.is" class="back">
             <textarea class="input" :rows="rows" v-model="reason"></textarea>
             <div class="actions">
-                <span class="apply"></span>
-                <span class="cancel"></span>
+                <span class="apply" @click="moveBack2"></span>
+                <span class="cancel" @click="cancelMove"></span>
             </div>
         </div>
 
         <div class="info">
             <span v-show="inputInfo.amountEdit > 1" >Изменено: {{parseDateFromTimestamp(inputInfo.dates.edit)}}</span>
-            <span v-show="inputInfo.back.reason !== null">Возвращена: {{inputInfo.reason}}</span>
+            <span v-show="inputInfo.back.reason !== null">Возвращена: {{inputInfo.back.reason}}</span>
         </div>
 
-        <div class="moving">
-            <button v-show="columnUnique === 3" @click="moveBack">вернуть</button>
+        <div v-show="!inputInfo.back.is" class="moving">
+            <button v-show="columnUnique === 3" @click="moveBack1">вернуть</button>
             <button v-show="columnUnique !== 4" @click="moveForward">дальше</button>
         </div>
     </div>

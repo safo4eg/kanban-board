@@ -271,6 +271,9 @@ main .title {
     resize: none;
     font-size: 14px;
     margin-top: 15px;
+
+    display: flex;
+    flex-direction: column;
 }
 
 .card.test .back textarea {
@@ -289,6 +292,11 @@ main .title {
 
 .card.test .input:focus {
     outline: none;
+}
+
+.card.test .actions {
+    margin-top: 5px;
+    align-self: flex-end;
 }
 
 .card.test .actions .cancel::before {

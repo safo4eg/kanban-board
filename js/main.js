@@ -17,8 +17,15 @@ templates.then(array => {
         template: boardTemplate,
 
         mounted() {
-            eventBus.$on('move', (columnUnique, cardUnique, status) => {
-                this.changeCard(columnUnique, cardUnique, status);
+            eventBus.$on('move', (columnUnique, cardUnique, status, reason=null) => {
+                if(status !== 'cancel') {
+                    if(status === 'back') {
+                        this.changeCard(columnUnique, cardUnique, 'update', {'back': {is: false, reason: reason}});
+                    }
+                    this.changeCard(columnUnique, cardUnique, status);
+                } else {
+                    this.changeCard(columnUnique, cardUnique, 'update', {'back': {is: false, reason: null}});
+                }
             });
 
 
@@ -247,9 +254,16 @@ templates.then(array => {
                 eventBus.$emit('move', this.columnUnique, this.inputInfo.unique, 'forward');
             },
 
-            moveBack() {
+            moveBack1() {
                 eventBus.$emit('card-back', this.columnUnique, this.inputInfo.unique, true);
-                // eventBus.$emit('move', this.columnUnique, this.inputInfo.unique, 'back');
+            },
+
+            moveBack2() {
+                eventBus.$emit('move', this.columnUnique, this.inputInfo.unique, 'back', this.reason);
+            },
+
+            cancelMove() {
+                eventBus.$emit('move', this.columnUnique, this.inputInfo.unique, 'cancel');
             }
         }
     };
