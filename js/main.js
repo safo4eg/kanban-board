@@ -16,25 +16,27 @@ templates.then(array => {
     let boardBody = {
         template: boardTemplate,
 
-        beforeUpdate() {
-            console.log('изменения')
-        },
-
         mounted() {
             eventBus.$on('card-edit', (columnUnique, cardUnique, status) => {
                 this.changeCard(columnUnique, cardUnique, 'update', {'isEdit': status});
             });
 
-            eventBus.$on('save-card', (columnUnique, cardUnique, title, desc, deadline) => {
+            eventBus.$on('save-card', (columnUnique, cardUnique, title, desc, deadline, timeEdit, amountEdit) => {
                 let changes = {
                     'title': title,
                     'desc': desc,
                     'dates': {
                         'deadline': deadline,
+                        'edit': timeEdit,
                     },
                     'isEdit': false,
+                    'amountEdit': amountEdit
                 };
                 this.changeCard(columnUnique, cardUnique,'update', changes);
+            });
+
+            eventBus.$on('delete-card', (columnUnique, cardUnique) => {
+                this.changeCard(columnUnique, cardUnique,'delete');
             });
         },
 
@@ -79,11 +81,12 @@ templates.then(array => {
                    title: 'Новая задача',
                    desc: 'Описание задачи',
                    isEdit: false,
+                   amountEdit: 0,
                    dates: {
                        creation: Date.now(),
                        edit: null,
                        completion: null,
-                       deadline: 'DEADLINE'
+                       deadline: null,
                    },
                };
 
@@ -105,7 +108,8 @@ templates.then(array => {
                                         else {
                                             let dates = Object.entries(entry[1]);
                                             dates.forEach(date => {
-                                                card.dates[`${date[0]}`] = this.parseDateToTimestamp(date[1]);
+                                                if(typeof date[1] === 'string') card.dates[`${date[0]}`] = this.parseDateToTimestamp(date[1]);
+                                                else card.dates[`${date[0]}`] = date[1];
                                             });
                                         }
                                     });
@@ -165,10 +169,6 @@ templates.then(array => {
     let cardBody = {
         template: cardTemplate,
 
-        beforeUpdate() {
-            console.log(this.parseDateFromTimestamp(this.inputInfo.dates.creation));
-        },
-
         props: {
             columnUnique: {
                 type: Number,
@@ -198,14 +198,20 @@ templates.then(array => {
             },
 
             parseDateFromTimestamp(timestamp) {
-                let date = new Date(timestamp);
-                let year = date.getFullYear();
-                let month = date.getMonth() + 1;
-                let day = date.getDate();
-                month = month < 10? `0${month}`: month;
-                day = day < 10? `0${day}`: day;
-                let str = year + '.' + month + '.' + day;
-                return str;
+                if(timestamp !== null) {
+                    let date = new Date(timestamp);
+                    let year = date.getFullYear();
+                    let month = date.getMonth() + 1;
+                    let day = date.getDate();
+                    month = month < 10? `0${month}`: month;
+                    day = day < 10? `0${day}`: day;
+                    let str = year + '.' + month + '.' + day;
+                    return str;
+                } else return '';
+            },
+
+            deleteCard() {
+                eventBus.$emit('delete-card', this.columnUnique, this.inputInfo.unique);
             }
         }
     };
@@ -227,6 +233,16 @@ templates.then(array => {
             columnUnique: {
                 type: Number,
                 required: true
+            },
+
+            formattedDeadline: {
+                type: String,
+                required: true
+            },
+
+            formattedCreation: {
+                type: String,
+                required: true
             }
         },
 
@@ -234,7 +250,8 @@ templates.then(array => {
             return {
                 title: this.initialValues.title,
                 desc: this.initialValues.desc,
-                deadline: '',
+                deadline: this.formattedDeadline,
+                timeEdit: Date.now(),
                 errors: {}
             }
         },
@@ -252,7 +269,7 @@ templates.then(array => {
                 if(this.deadline.search(/^\d{2}\.\d{2}\.\d{4}$/) === -1) errors.deadline = 'Неверный формат';
                 if(Object.keys(errors).length !== 0) this.errors = errors;
                 else {
-                    eventBus.$emit('save-card', this.columnUnique, this.initialValues.unique, this.title, this.desc, this.deadline);
+                    eventBus.$emit('save-card', this.columnUnique, this.initialValues.unique, this.title, this.desc, this.deadline, this.timeEdit, ++this.initialValues.amountEdit);
                 }
             },
 

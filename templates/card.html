@@ -2,7 +2,7 @@
         <div class="header">
             <h2 class="title">{{inputInfo.title}}</h2>
             <div class="actions">
-                <span class="delete"></span>
+                <span @click="deleteCard" class="delete"></span>
                 <span @click="changeEditStatus" class="edit"></span>
             </div>
         </div>
@@ -14,7 +14,11 @@
         <div class="time">
             <span class="from">{{parseDateFromTimestamp(inputInfo.dates.creation)}}</span>
             <span class="arrow"></span>
-            <span class="to">{{typeof inputInfo.dates.deadline === 'string'? inputInfo.dates.deadline: parseDateFromTimestamp(inputInfo.dates.deadline)}}</span>
+            <span class="to">{{inputInfo.dates.deadline === null? 'DEADLINE': parseDateFromTimestamp(inputInfo.dates.deadline)}}</span>
+        </div>
+
+        <div v-show="inputInfo.amountEdit > 1" class="info">
+            <span>Изменено: {{parseDateFromTimestamp(inputInfo.dates.edit)}}</span>
         </div>
     </div>
 
@@ -23,4 +27,6 @@
             :initial-values="inputInfo"
             :class-name="className"
             :column-unique="columnUnique"
+            :formatted-deadline="parseDateFromTimestamp(inputInfo.dates.deadline)"
+            :formatted-creation="parseDateFromTimestamp(inputInfo.dates.creation)"
     ></card-edit>
