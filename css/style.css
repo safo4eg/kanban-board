@@ -263,6 +263,60 @@ main .title {
     margin-top: 3px;
 }
 
+/* CARD TEST BACK */
+
+.card.test .back {
+    max-width: 203px;
+    width: 100%;
+    resize: none;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.card.test .back textarea {
+    max-width: 203px;
+    width: 100%;
+    resize: none;
+    font-size: 14px;
+}
+
+.card.test .input {
+    border: none;
+    border-bottom: 1px solid black;
+    color: black;
+    background-color: #b4b401;
+}
+
+.card.test .input:focus {
+    outline: none;
+}
+
+.card.test .actions .cancel::before {
+    content: "\2716";
+    color: white;
+    font-size: 16px;
+    transition-duration: 0.1s;
+}
+
+.card.test .actions .cancel:hover::before {
+    cursor: pointer;
+    color: red;
+    border-color: gray;
+}
+
+.card.test .actions .apply::before {
+    content: "\2714";
+    color: white;
+    font-size: 16px;
+    transition-duration: 0.1s;
+}
+
+.card.test .actions .apply:hover::before {
+    cursor: pointer;
+    color: green;
+    border-color: gray;
+}
+
 
 
 

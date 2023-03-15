@@ -26,6 +26,10 @@ templates.then(array => {
                 this.changeCard(columnUnique, cardUnique, 'update', {'isEdit': status});
             });
 
+            eventBus.$on('card-back', (columnUnique, cardUnique, status) => {
+                this.changeCard(columnUnique, cardUnique, 'update', {'back': {is: status, reason: null}});
+            });
+
             eventBus.$on('save-card', (columnUnique, cardUnique, title, desc, deadline, timeEdit, amountEdit) => {
                 let changes = {
                     'title': title,
@@ -87,6 +91,10 @@ templates.then(array => {
                    desc: 'Описание задачи',
                    isEdit: false,
                    amountEdit: 0,
+                   back: {
+                       is: false,
+                       reason: null
+                   },
                    dates: {
                        creation: Date.now(),
                        edit: null,
@@ -202,7 +210,14 @@ templates.then(array => {
 
         data() {
             return {
+                reason: 'Причина возврата',
+            }
+        },
 
+        computed: {
+            rows() {
+                if(this.reason.length === 0) return 1;
+                return Math.ceil(this.reason.length / 23);
             }
         },
 
@@ -233,7 +248,8 @@ templates.then(array => {
             },
 
             moveBack() {
-                eventBus.$emit('move', this.columnUnique, this.inputInfo.unique, 'back');
+                eventBus.$emit('card-back', this.columnUnique, this.inputInfo.unique, true);
+                // eventBus.$emit('move', this.columnUnique, this.inputInfo.unique, 'back');
             }
         }
     };

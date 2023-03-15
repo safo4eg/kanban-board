@@ -2,7 +2,7 @@
         <div class="header">
             <h2 class="title">{{inputInfo.title}}</h2>
             <div class="actions">
-                <span @click="deleteCard" class="delete"></span>
+                <span v-show="columnUnique === 1" @click="deleteCard" class="delete"></span>
                 <span @click="changeEditStatus" class="edit"></span>
             </div>
         </div>
@@ -17,8 +17,17 @@
             <span class="to">{{inputInfo.dates.deadline === null? 'DEADLINE': parseDateFromTimestamp(inputInfo.dates.deadline)}}</span>
         </div>
 
-        <div v-show="inputInfo.amountEdit > 1" class="info">
-            <span>Изменено: {{parseDateFromTimestamp(inputInfo.dates.edit)}}</span>
+        <div v-if="inputInfo.back.is" class="back">
+            <textarea class="input" :rows="rows" v-model="reason"></textarea>
+            <div class="actions">
+                <span class="apply"></span>
+                <span class="cancel"></span>
+            </div>
+        </div>
+
+        <div class="info">
+            <span v-show="inputInfo.amountEdit > 1" >Изменено: {{parseDateFromTimestamp(inputInfo.dates.edit)}}</span>
+            <span v-show="inputInfo.back.reason !== null">Возвращена: {{inputInfo.reason}}</span>
         </div>
 
         <div class="moving">
