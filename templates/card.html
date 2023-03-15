@@ -12,9 +12,9 @@
         </div>
 
         <div class="time">
-            <span class="from">{{inputInfo.dates.creation}}</span>
+            <span class="from">{{parseDateFromTimestamp(inputInfo.dates.creation)}}</span>
             <span class="arrow"></span>
-            <span class="to">{{inputInfo.dates.deadline}}</span>
+            <span class="to">{{typeof inputInfo.dates.deadline === 'string'? inputInfo.dates.deadline: parseDateFromTimestamp(inputInfo.dates.deadline)}}</span>
         </div>
     </div>
 
