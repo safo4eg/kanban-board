@@ -17,6 +17,11 @@ templates.then(array => {
         template: boardTemplate,
 
         mounted() {
+            eventBus.$on('move', (columnUnique, cardUnique, status) => {
+                this.changeCard(columnUnique, cardUnique, status);
+            });
+
+
             eventBus.$on('card-edit', (columnUnique, cardUnique, status) => {
                 this.changeCard(columnUnique, cardUnique, 'update', {'isEdit': status});
             });
@@ -114,6 +119,15 @@ templates.then(array => {
                                         }
                                     });
                                 }
+                                else if(action === 'forward' || action === 'back') {
+                                    let newColumnUnique = action === 'forward'? columnUnique + 1: columnUnique - 1;
+                                    if(newColumnUnique <= this.columns.length && newColumnUnique >= 1) {
+                                        let card = column.cards.splice(index, 1);
+                                        this.columns.forEach(column2 => {
+                                            if(column2.unique === newColumnUnique) column2.cards.push(card[0]);
+                                        });
+                                    }
+                                }
                             }
                         });
                     }
@@ -182,7 +196,7 @@ templates.then(array => {
 
             className: {
                 type: String,
-                required: false
+                required: true
             },
         },
 
@@ -212,6 +226,14 @@ templates.then(array => {
 
             deleteCard() {
                 eventBus.$emit('delete-card', this.columnUnique, this.inputInfo.unique);
+            },
+
+            moveForward() {
+                eventBus.$emit('move', this.columnUnique, this.inputInfo.unique, 'forward');
+            },
+
+            moveBack() {
+                eventBus.$emit('move', this.columnUnique, this.inputInfo.unique, 'back');
             }
         }
     };
@@ -250,7 +272,7 @@ templates.then(array => {
             return {
                 title: this.initialValues.title,
                 desc: this.initialValues.desc,
-                deadline: this.formattedDeadline,
+                deadline: this.formattedDeadline.split('.').reverse().join('.'),
                 timeEdit: Date.now(),
                 errors: {}
             }

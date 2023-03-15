@@ -20,6 +20,11 @@
         <div v-show="inputInfo.amountEdit > 1" class="info">
             <span>Изменено: {{parseDateFromTimestamp(inputInfo.dates.edit)}}</span>
         </div>
+
+        <div class="moving">
+            <button v-show="columnUnique === 3" @click="moveBack">вернуть</button>
+            <button v-show="columnUnique !== 4" @click="moveForward">дальше</button>
+        </div>
     </div>
 
     <card-edit
