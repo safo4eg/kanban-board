@@ -21,6 +21,11 @@ templates.then(array => {
                 if(status !== 'cancel') {
                     if(status === 'back') {
                         this.changeCard(columnUnique, cardUnique, 'update', {'back': {is: false, reason: reason}});
+                    } else if(status === 'forward') {
+                        let nexColumnUnique = columnUnique + 1;
+                        if(nexColumnUnique === this.columns.length) {
+                            this.changeCard(columnUnique, cardUnique, 'update', {'dates': {'completion': Date.now()}});
+                        }
                     }
                     this.changeCard(columnUnique, cardUnique, status);
                 } else {
@@ -96,7 +101,7 @@ templates.then(array => {
                    unique: Date.now(),
                    title: 'Новая задача',
                    desc: 'Описание задачи',
-                   isEdit: false,
+                   isEdit: true,
                    amountEdit: 0,
                    back: {
                        is: false,

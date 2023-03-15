@@ -34,6 +34,12 @@
             <button v-show="columnUnique === 3" @click="moveBack1">вернуть</button>
             <button v-show="columnUnique !== 4" @click="moveForward">дальше</button>
         </div>
+
+        <div v-if="columnUnique === 4" class="status">
+            <span class="arrow"></span>
+            <span class="end">{{parseDateFromTimestamp(inputInfo.dates.completion)}}</span>
+            <span>{{inputInfo.dates.deadline - inputInfo.dates.completion < 0? 'Просрочено': 'Выполнено'}}</span>
+        </div>
     </div>
 
     <card-edit
