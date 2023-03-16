@@ -3,7 +3,7 @@
             <h2 class="title">{{inputInfo.title}}</h2>
             <div class="actions">
                 <span v-show="columnUnique === 1" @click="deleteCard" class="delete"></span>
-                <span @click="changeEditStatus" class="edit"></span>
+                <span v-show="columnUnique !== 4" @click="changeEditStatus" class="edit"></span>
             </div>
         </div>
 
@@ -17,7 +17,7 @@
             <span class="to">{{inputInfo.dates.deadline === null? 'DEADLINE': parseDateFromTimestamp(inputInfo.dates.deadline)}}</span>
         </div>
 
-        <div v-if="inputInfo.back.is" class="back">
+        <div v-if="inputInfo.backIs" class="back">
             <textarea class="input" :rows="rows" v-model="reason"></textarea>
             <div class="actions">
                 <span class="apply" @click="moveBack2"></span>
@@ -26,11 +26,13 @@
         </div>
 
         <div class="info">
-            <span v-show="inputInfo.amountEdit > 1" >Изменено: {{parseDateFromTimestamp(inputInfo.dates.edit)}}</span>
-            <span v-show="inputInfo.back.reason !== null">Возвращена: {{inputInfo.back.reason}}</span>
+            <span v-show="inputInfo.amountEdit > 1">Изменено: {{parseDateFromTimestamp(inputInfo.dates.edit)}}</span>
+            <span v-show="inputInfo.backReasons.length !== 0">Возвращена:
+                <div v-for="(reason, index) in inputInfo.backReasons" :key="index">{{index + 1}}) {{reason}}</div>
+            </span>
         </div>
 
-        <div v-show="!inputInfo.back.is" class="moving">
+        <div v-show="!inputInfo.backIs" class="moving">
             <button v-show="columnUnique === 3" @click="moveBack1">вернуть</button>
             <button v-show="columnUnique !== 4" @click="moveForward">дальше</button>
         </div>
@@ -38,7 +40,7 @@
         <div v-if="columnUnique === 4" class="status">
             <span class="arrow"></span>
             <span class="end">{{parseDateFromTimestamp(inputInfo.dates.completion)}}</span>
-            <span>{{inputInfo.dates.deadline - inputInfo.dates.completion < 0? 'Просрочено': 'Выполнено'}}</span>
+            <span :class="{late: inputInfo.dates.deadline - inputInfo.dates.completion < 0}">{{inputInfo.dates.deadline - inputInfo.dates.completion < 0? 'Просрочено': 'Выполнено'}}</span>
         </div>
     </div>
 

@@ -325,6 +325,14 @@ main .title {
     border-color: gray;
 }
 
+.late {
+    color: red;
+}
+
+.notLate {
+    color: blue;
+}
+
 
 
 

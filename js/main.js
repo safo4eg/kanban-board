@@ -20,7 +20,7 @@ templates.then(array => {
             eventBus.$on('move', (columnUnique, cardUnique, status, reason=null) => {
                 if(status !== 'cancel') {
                     if(status === 'back') {
-                        this.changeCard(columnUnique, cardUnique, 'update', {'back': {is: false, reason: reason}});
+                        this.addReason(columnUnique, cardUnique, reason);
                     } else if(status === 'forward') {
                         let nexColumnUnique = columnUnique + 1;
                         if(nexColumnUnique === this.columns.length) {
@@ -29,7 +29,7 @@ templates.then(array => {
                     }
                     this.changeCard(columnUnique, cardUnique, status);
                 } else {
-                    this.changeCard(columnUnique, cardUnique, 'update', {'back': {is: false, reason: null}});
+                    this.changeCard(columnUnique, cardUnique, 'update', {'backIs': false});
                 }
             });
 
@@ -39,7 +39,7 @@ templates.then(array => {
             });
 
             eventBus.$on('card-back', (columnUnique, cardUnique, status) => {
-                this.changeCard(columnUnique, cardUnique, 'update', {'back': {is: status, reason: null}});
+                this.changeCard(columnUnique, cardUnique, 'update', {'backIs': true});
             });
 
             eventBus.$on('save-card', (columnUnique, cardUnique, title, desc, deadline, timeEdit, amountEdit) => {
@@ -103,10 +103,8 @@ templates.then(array => {
                    desc: 'Описание задачи',
                    isEdit: true,
                    amountEdit: 0,
-                   back: {
-                       is: false,
-                       reason: null
-                   },
+                   backIs: false,
+                   backReasons: [],
                    dates: {
                        creation: Date.now(),
                        edit: null,
@@ -153,6 +151,19 @@ templates.then(array => {
                     }
                 });
             }, //changeCard
+
+            addReason(columnUnique, cardUnique, reason) {
+                this.columns.forEach(column => {
+                    if(column.unique === columnUnique) {
+                        column.cards.forEach((card, index) => {
+                            if(card.unique === cardUnique) {
+                                card.backReasons.push(reason);
+                                card.backIs = false;
+                            }
+                        });
+                    }
+                });
+            },
 
             parseDateToTimestamp(str) {
                 let values = str.split('.');
@@ -305,8 +316,8 @@ templates.then(array => {
 
         data() {
             return {
-                title: this.initialValues.title,
-                desc: this.initialValues.desc,
+                title: '',
+                desc: '',
                 deadline: this.formattedDeadline.split('.').reverse().join('.'),
                 timeEdit: Date.now(),
                 errors: {}
